@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load mytags %}
+{% block content %}
+    {% block extra_css %}
+        <style>
+            .label {
+                color: white;
+                background-color: #6ec5f5;
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                display: inline-block;
+                padding: 4px 15px 2px;
+                position: absolute;
+                left: 0;
+                top: 20px;
+            }
+
+            @media (min-width: 0) {
+                .g-mr-15 {
+                    margin-right: 1.07143rem !important;
+                }
+            }
+
+            @media (min-width: 0) {
+                .g-mt-3 {
+                    margin-top: 0.21429rem !important;
+                }
+            }
+
+            .g-height-50 {
+                height: 50px;
+            }
+
+            .g-width-50 {
+                width: 50px !important;
+            }
+
+            @media (min-width: 0) {
+                .g-pa-30 {
+                    padding: 2.14286rem !important;
+                }
+            }
+
+            .g-bg-secondary {
+                background-color: #fafafa !important;
+            }
+
+            .u-shadow-v18 {
+                box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
+            }
+
+            .g-color-gray-dark-v4 {
+                color: #777 !important;
+            }
+
+            .g-font-size-12 {
+                font-size: 0.85714rem !important;
+            }
+
+            .media-comment {
+                margin-top: 20px
+            }
+        </style>
+    {% endblock %}
+    {% include 'page_search.html' %}
+
+    <section class="section bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="product-details">
+                        <h1 class="product-title" style="text-align: center">{{ object.title }}</h1>
+                        <div class="product-meta text-center">
+                            <ul class="list-inline">
+                                <li style="color: white;background-color: #025FD3;padding: 10px;border-radius: 2px"
+                                    class="list-inline-item"><i class="fa fa-folder-open-o"></i> {% trans 'Category' %}:<a
+                                        href="" style="color: white">{{ object.category.title }}</a>
+                                </li>
+                                <a style="font-size: 15px;color: white;background-color: #025FD3;padding: 12px;border-radius: 2px"
+                                   href="{% url 'products:add-to-cart' pk=object.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}"
+                                   class="add-cart">
+                                    {% if object|in_cart:request %}
+                                        - {% trans 'Remove' %}
+                                        <i style="font-size: 20px;padding-left: 6px;color: white"
+                                           class="fa fa-shopping-cart"
+                                           aria-hidden="true"></i>
+                                    {% else %}
+                                        + {% trans 'Add' %}
+                                        <i style="font-size: 20px;padding-left: 6px;color: white"
+                                           class="fa fa-shopping-cart"
+                                           aria-hidden="true"></i>
+                                    {% endif %}
+                                </a>
+
+                            </ul>
+                        </div>
+
+                        <!-- product slider -->
+                        <div class="product-slider">
+                            {% for image in object.images.all %}
+                                <div class="product-slider-item my-4" id="image-id" data-image="{{ image.image.url }}">
+                                    <img style="margin-top: -50px" class="im w-100" src="{{ image.image.url }}"
+                                         alt="product-img">
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="content mt-5 pt-5">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                     aria-labelledby="pills-home-tab">
+                                    <h3 class="tab-title">{% trans 'Description' %}</h3>
+                                    <p>{{ object.description }}</p>
+                                    {#                                    specification#}
+                                    {% include 'product_specification.html' %}
+
+                                    {#                                    comment#}
+
+                                    <div class="container">
+                                        <div class="row">
+                                            {% for comment in object.get_comments %}
+                                                <div class="col-md-12">
+                                                    <div class="media g-mb-30 media-comment">
+                                                        <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15"
+                                                             src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                                                             alt="Image Description">
+                                                        <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+                                                            <div class="g-mb-15">
+                                                                <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ comment.name }}</h5>
+                                                                <span class="g-color-gray-dark-v4 g-font-size-12">{{ comment.created_at|timesince }}</span>
+                                                            </div>
+
+                                                            <p>{{ comment.comment }}</p>
+
+                                                            <ul class="list-inline d-sm-flex my-0">
+                                                                <li class="list-inline-item g-mr-20">
+                                                                    <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover"
+                                                                       href="#!">
+                                                                        <i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3"></i>
+                                                                        178
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item g-mr-20">
+                                                                    <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover"
+                                                                       href="#!">
+                                                                        <i class="fa fa-thumbs-down g-pos-rel g-top-1 g-mr-3"></i>
+                                                                        34
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item ml-auto">
+                                                                    <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover"
+                                                                       href="#!">
+                                                                        <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                                                                        {% trans 'Reply' %}
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <h5>{% trans "Read comments" %}({{ object.comments.count }})</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-submit">
+                            <form action="{% url 'products:comment' pk=object.pk %}#comment-above"
+                                  method="post" class="row">
+                                {% csrf_token %}
+                                <div class="col-lg-6">
+                                    <input type="text" name="name" id="name"
+                                           class="form-control"
+                                           placeholder="{% trans 'Name' %}">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="email" name="email" id="email"
+                                           class="form-control"
+                                           placeholder="Email">
+                                </div>
+                                <div class="col-12 mt-4">
+                                                            <textarea name="comment" id="review" rows="10"
+                                                                      class="form-control"
+                                                                      placeholder="{% trans 'Message' %}"></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit"
+                                            class="btn btn-main"
+                                            style="background-color: #212529">{% trans 'Sumbit' %}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container mt-5">
+            <div class="row">
+                {% for object in related_products %}
+                    <div class="col-md-3 col-lg-2 mb-5">
+                        <div class="">
+                            <div class="view zoom overlay rounded z-depth-2">
+                                <a href="#!">
+                                        <div class="mask">
+                                                    <a href="{% url 'products:detail' pk=object.pk %}">
+                                                        {% if object.is_discount %}
+                                                            <span class="label mt-1 bg-info"
+                                                                  style="border-radius: 3px">{% trans 'Sale' %}</span>
+                                                        {% endif %}
+                                                        {% if object.is_new %}
+                                                            <span  style="border-radius: 3px;"
+                                                                  class="label {% if object.is_discount %}mt-5 bg-warning {% endif %}">{% trans 'New' %}</span>
+                                                        {% endif %}
+                                                        <img class="card-img-top img-fluid w-100"
+                                                             src="{{ object.get_image }}"
+                                                             alt="Card image cap">
+                                                    </a>
+                                                    <div class="mask rgba-black-slight"></div>
+                                                </div>
+                                </a>
+                            </div>
+
+                            <div class="text-center pt-4">
+                                <h4 style="font-size: 15px;text-align: center;white-space: nowrap; text-overflow: ellipsis;
+    overflow: hidden; " class="card-title"><a
+                                        href="{% url 'products:detail' pk=object.pk %}">{{ object.title }}</a>
+                                </h4>
+                                <h4 class="card-title pt-2"
+                                    style="font-size: 18px;text-align: center"><span
+                                        class="price-a"><span>${{ object.get_price }}</span><strike
+                                        class="small">
+                                        {% if object.is_discount %}${{ object.price }}{% endif %}</strike></span>
+                                </h4>
+                            </div>
+                            <div class="text-center">
+                                <a style="font-size: 13px;color: white;background-color: #025FD3;padding: 5px;border-radius: 2px"
+                                   href="{% url 'products:add-to-cart' pk=object.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}"
+                                   class="add-cart">
+                                    {% if object|in_cart:request %}
+                                        - {% trans 'Remove' %}
+                                        <i style="font-size: 15px;padding-left: 0;color: white"
+                                           class="fa fa-shopping-cart"
+                                           aria-hidden="true"></i>
+                                    {% else %}
+                                        + {% trans 'Add' %}
+                                        <i style="font-size: 15px;padding-left: 0;color: white"
+                                           class="fa fa-shopping-cart"
+                                           aria-hidden="true"></i>
+                                    {% endif %}
+                                </a>
+                                <a href="{% url 'pages:add-wishlist' pk=object.pk %}?next={{ request.path }}{{ request.GET.urlencode }}">
+                                    <img style="margin-left: 5px"
+                                         src="{% get_wishlist_icon request object.pk %}"
+                                         alt="">
+                                </a></div>
+
+                        </div>
+                        <!-- Card -->
+
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+
+        <!-- Container End -->
+    </section>
+
+{% endblock %}

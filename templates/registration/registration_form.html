@@ -1,0 +1,27 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}
+    Register Now
+{% endblock %}
+{% block form %}
+    <form method="post">
+{#        {{ forms.erorrs }}#}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <fieldset class="p-4">
+            <input type="text" name="username" placeholder="{% trans 'Username' %}*" class="border p-3 w-100 my-2">
+            <input type="email" name="email" placeholder="Email*" class="border p-3 w-100 my-2">
+            <input type="password" name="password1" placeholder="{% trans 'Password' %}*" class="border p-3 w-100 my-2">
+            <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}*"
+                   class="border p-3 w-100 my-2">
+            <div class="loggedin-forgot d-inline-flex my-3">
+                <input type="checkbox" id="registering" class="mt-1">
+                <label for="registering" class="px-2">{% trans 'By registering, you accept our' %} <a
+                        class="text-primary font-weight-bold"
+                        href="terms-condition.html">{% trans 'Terms & Conditions' %}</a></label>
+            </div>
+
+            <input type="submit" value="{% trans 'Sign in' %}" class="btn btn-block py-2 btn-primary">
+        </fieldset>
+    </form>
+{% endblock %}

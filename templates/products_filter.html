@@ -1,0 +1,77 @@
+{% load i18n %}
+<div class="col-md-3">
+    <div class="category-sidebar">
+        <div class="widget category-list">
+            <h4 class="widget-header" style="color: #52a7cc;font-size: 20px">{% trans 'Gender' %}</h4>
+            <ul class="category-list">
+                {% for gender in gender %}
+                    <li><a style="font-size: 15px;cursor: pointer"
+                            {% if request.GET.gender == gender.pk|stringformat:'i' %}
+                           class="text-danger"
+                            {% endif %}
+                            {#                                                            связанный URL#}
+                           onclick="addUrlParameter('gender','{{ gender.pk }}')">{{ gender.title }}
+                    </a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="widget category-list">
+            <h4 class="widget-header" style="color: #52a7cc;font-size: 20px">{% trans "Categories" %}</h4>
+            <ul class="category-list">
+                {% for category in categories %}
+                    <li>
+                        <a style="font-weight: lighter;font-size: 15px;cursor: pointer"
+                                {% if request.GET.cat == category.pk|stringformat:'i' %}
+                           class="text-danger"
+                                {% endif %}
+                           onclick="addUrlParameter('cat','{{ category.pk }}')">{{ category.title }}<span>93</span></a>
+                    </li>
+                {% endfor %}
+
+
+            </ul>
+        </div>
+
+        <div class="widget category-list">
+            <h4 class="widget-header" style="color: #52a7cc;font-size: 20px">{% trans 'Brands' %}</h4>
+            <ul class="category-list">
+                {% for brand in brands %}
+                    <li><a style="font-weight: bold;font-size: 15px;cursor: pointer"
+                            {% if request.GET.brand == brand.pk|stringformat:'i' %}
+                           class="text-danger"
+                            {% endif %}
+                            {#                                                            связанный URL#}
+                           onclick="addUrlParameter('brand','{{ brand.pk }}')">{{ brand.title }}
+                        <img src="{{ brand.image.url }}" alt="" style="width: 40px;height: 40px">
+                        <span>93</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <div class="widget category-list">
+            <h4 class="widget-header" style="color: #52a7cc;font-size: 20px">{% trans 'Tags' %}</h4>
+            <ul class="category-list">
+                <li class="row"></li>
+                {% for tag in tags %}
+                    <li><a style="font-weight: bolder;cursor: pointer" href="">{{ tag.title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="widget price-range w-100">
+            <h4 class="widget-header" style="color: #52a7cc;font-size: 20px;cursor: pointer">price range</h4>
+            <div class="block">
+                <input class="range-track w-100" type="text" data-slider-min="0" data-slider-max="5000"
+                       data-slider-step="5"
+                       data-slider-value="[1,5000]">
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="value">$10 - $5000</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

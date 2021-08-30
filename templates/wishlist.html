@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mytags %}
+{% block content %}
+    <!--Grid row-->
+
+    <!--Grid row-->
+    <section class="dashboard section">
+        <!-- Container Start -->
+        <div class="container">
+            <!-- Row Start -->
+            <div class="row">
+                <div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
+                    <div class="sidebar">
+                        <!-- User Widget -->
+                        <div class="widget user-dashboard-profile">
+                            <!-- User Image -->
+                            <div class="profile-thumb">
+                                <img src="{% static 'images/user/user-thumb.jpg' %}" alt="" class="rounded-circle">
+                            </div>
+                            <!-- User Name -->
+                            <h5 class="text-center">Samanta Doe</h5>
+                            <p>Joined February 06, 2017</p>
+                            <a href="{% url 'profile:home' %}" class="btn btn-main-sm">Edit Profile</a>
+                        </div>
+                        <div class="widget user-dashboard-menu">
+                            <ul>
+                                <li><a href="{% url 'products:cart' %}"><i class="fa fa-user"></i>Cart <span
+                                        style="color: #52a7cc">({% cart_count request %})</span></a>
+                                </li>
+                                <li><a href="{% url 'pages:wishlist' %}"><i class="fa fa-bookmark-o"></i> Favourite
+                                    Ads <span>5</span></a></li>
+                                <li><a href="dashboard-archived-ads.html"><i
+                                        class="fa fa-file-archive-o"></i>History<span>12</span></a></li>
+                                <li><a href="{% url 'auth_logout' %}"><i class="fa fa-cog"></i> Logout</a></li>
+                                <li><a href="" data-toggle="modal" data-target="#deleteaccount"><i
+                                        class="fa fa-power-off"></i>Delete
+                                    Account</a></li>
+                            </ul>
+                        </div>
+                        <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-bottom-0">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img src="{% static 'images/account/Account1.png' %}" class="img-fluid mb-2"
+                                             alt="">
+                                        <h6 class="py-2">Are you sure you want to delete your account?</h6>
+                                        <p>Do you really want to delete these records? This process cannot be
+                                            undone.</p>
+                                        <textarea name="message" id="" cols="40" rows="4"
+                                                  class="w-100 rounded"></textarea>
+                                    </div>
+                                    <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-lg-between justify-content-center">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+                    <!-- Recently Favorited -->
+                    <div class="widget dashboard-container my-adslist">
+                        <h3 class="widget-header">My Favourite</h3>
+                        <table class="table table-responsive product-dashboard-table">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Title</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in object_list %}
+                                <tr>
+                                    <td class="product-thumb">
+                                        <img width="80px" height="auto" src="{{ product.get_image }}"
+                                             alt="image description"></td>
+                                    <td class="product-details">
+                                        <h3 class="title">{{ product.title }}</h3>
+                                        <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
+                                        <span class="location"><strong>Price</strong>${{ product.price }}</span>
+
+                                        <span class="status active"><strong>Brand</strong>{{ product.brand.title }}</span>
+                                        <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
+                                        <span><strong>Posted on: </strong><time>{{ product.created_at|date:'D-m-Y' }}</time> </span>
+
+                                    </td>
+                                    <td class="product-category"><span class="categories">{{ product.category }}</span>
+                                    </td>
+                                    <td class="action" data-title="Action">
+                                        <div class="">
+                                            <ul class="list-inline justify-content-center">
+                                                <li class="list-inline-item">
+                                                    <a data-toggle="tooltip" data-placement="top" title="view"
+                                                       class="view" href="{% url 'products:detail' pk=product.pk %}">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a class="delete" data-toggle="tooltip" data-placement="top"
+                                                       title="Delete"
+                                                       href="{% url 'pages:add-wishlist' pk=product.pk %}?next={{ request.path }}{{ request.GET.urlencode }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <h4>List is empty</h4>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- pagination -->
+                    <div class="pagination justify-content-center">
+                      <nav class="pagination-outer" aria-label="Page navigation">
+                            <ul class="pagination">
+                                 {% for page in page_obj.paginator.page_range %}
+                                      <li class="page-item">
+                                    <a style="padding: 10px" {% if page == page_obj.number %}class="active"{% endif %}
+                                       href="?page={{ page }}">{{ page }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- pagination -->
+
+                </div>
+            </div>
+            <!-- Row End -->
+        </div>
+        <!-- Container End -->
+    </section>
+{% endblock %}
+

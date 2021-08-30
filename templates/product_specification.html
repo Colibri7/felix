@@ -1,0 +1,47 @@
+{% load i18n %}
+<h3 class="tab-title">{% trans 'Product Specifications' %}</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+
+        <th scope="col">{% trans 'Product' %}</th>
+        <th scope="col">{% trans 'Detail' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+        <td>{% trans 'Price' %}</td>
+        <td>${{ object.get_price }}</td>
+
+    </tr>
+    <tr>
+
+        <td>{% trans 'Added' %}</td>
+        <td>{{ object.created_at|date:'D m Y' }}</td>
+
+    </tr>
+    <tr>
+
+        <td>{% trans 'Brand' %}</td>
+        <td>{{ object.brand.title }}</td>
+
+    </tr>
+    <tr>
+
+        <td>{% trans 'Model' %}</td>
+        <td>{{ object.model }}</td>
+
+    </tr>
+    <tr>
+
+        <td>{% trans 'Sizes' %}</td>
+        <td>{% for size in object.sizes.all %}
+            {{ size.title }}.
+        {% endfor %}</td>
+    </tr>
+    </tbody>
+</table>
+
+

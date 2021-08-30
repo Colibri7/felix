@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load mytags %}
+{% block content %}
+    <h1 class="text-center" style="font-family: OpenSans-Regular,serif">{% trans "History" %}</h1>
+    <div class="container mt-5 mb-5">
+        <table class="table table-striped table-dark" style="border-radius: 4px">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">{% trans "Products" %}</th>
+                <th scope="col">{% trans "Price" %}</th>
+                <th scope="col">{% trans "Created at" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in object_list %}
+                {% for product in order.products.all %}
+                    <tr>
+                        <th scope="row">{{ order.id }}</th>
+                        <td>
+                            {{ product.title }}
+                        </td>
+                        <td>{{ product.get_price }}$</td>
+                        <td>{{ order.created_at }}</td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

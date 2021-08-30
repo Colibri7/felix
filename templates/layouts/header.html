@@ -1,0 +1,100 @@
+{% load i18n %}
+{% load static %}
+{% load mytags %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light navigation">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto main-nav">
+                            <li class="nav-item active">
+                                <a style="font-size: 25px;font-family:Muli, sans-serif; " class="nav-link"
+                                   href="{% url 'pages:home' %}">{% trans 'Home' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="font-size: 25px;font-family:Muli, sans-serif;" class="nav-link"
+                                   href="{% url 'products:list' %}">{% trans 'Products' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="font-size: 25px;font-family:Muli, sans-serif;" class="nav-link"
+                                   href="{% url 'pages:contact' %}">{% trans 'Contact' %}</a>
+                            </li>
+
+
+                        </ul>
+                        <ul class="navbar-nav ml-auto mt-10">
+                            {% if request.user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="pr-3" href="{% url 'profile:home' %}"><i
+                                            style="font-size: 25px;margin-top:6px;color: #212529" class="fa fa-user"
+                                            aria-hidden="true"></i></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="pr-3" href="{% url 'orders:history' %}"><i
+                                            style="font-size: 25px;margin-top:6px;color: #212529" class="fa fa-history"
+                                            aria-hidden="true"></i></a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="pr-3" href="{% url 'pages:wishlist' %}"><i
+                                            style="font-size: 25px;margin-top:6px;color: #212529" class="fa fa-heart"
+                                            aria-hidden="true"></i></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="pr-3" href="{% url 'products:cart' %}"><i
+                                            style="font-size: 25px;margin-top:6px;color: #212529"
+                                            class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        <span>{% cart_count request %}</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link login-button"
+                                       href="{% url 'auth_logout' %}">{% trans 'Log out' %}</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link login-button"
+                                       href="{% url 'auth_login' %}">{% trans "Login" %}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="pr-3" href="{% url 'products:cart' %}"><i
+                                            style="font-size: 30px;color: #212529" class="fa fa-shopping-cart"
+                                            aria-hidden="true"></i>
+                                        <span>{% cart_count request %}</span></a>
+                                </li>
+                            {% endif %}
+               <div class="header__top__hover">
+                            {% get_current_language as lang %}
+                            {% get_available_languages as langs %}
+                            <span>{{ lang }} <i class="arrow_carrot-down"></i></span>
+                            <ul>
+                                {% for l in langs %}
+                                    {% if l.0 != lang %}
+                                        <li>
+                                            <a href="{% get_lang_url request l.0 %}"
+                                               style="color: #111; text-decoration: none">{{ l.0|upper }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+
+                            {#							<li class="nav-item">#}
+                            {#								<a class="nav-link text-white add-button" href="ad-listing.html"><i class="fa fa-plus-circle"></i> Add Listing</a>#}
+                            {#							</li>#}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>

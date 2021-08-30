@@ -1,0 +1,24 @@
+{% load i18n %}
+<section class="page-search" style="background-color: #212529">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="advance-search">
+                    <form action="{% url 'products:list' %}">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input value="{{ request.GET.q }}" type="text" class="form-control my-2 my-lg-0"
+                                       id="inputtext4"
+                                       placeholder=". . ." name="q">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <button type="submit" class="btn"
+                                        style="background-color: #212529;color: white;border-color: white">{% trans "Search" %}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
